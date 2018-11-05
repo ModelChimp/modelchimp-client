@@ -1,0 +1,55 @@
+*.py[cod]
+
+# Executable script
+run.py
+
+#settings files
+CACHE
+
+# Ignore logs folder
+logs
+
+# C extensions
+*.so
+
+# Packages
+.installed.cfg
+*.egg
+*.egg-info
+develop-eggs
+eggs
+bin
+build
+dist
+include
+lib
+lib64
+parts
+sdist
+var
+wheelhouse
+
+# Installer logs
+pip-log.txt
+
+# Python virtual envs
+mcenv
+
+
+# Emacs clutter
+TAGS
+TAGS~
+*~
+\#*#
+.#*
+www/uploads
+
+#Mac Clutter
+.DS_Store
+
+#Pycharm
+.idea
+
+#Files
+test.py
+test.png
