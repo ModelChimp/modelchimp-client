@@ -34,7 +34,7 @@ class WSConnectionThread(Thread):
         self.ws.close()
 
     def connect(self):
-        ws = websocket.WebSocketApp(self.address,
+        ws = websocket.WebSocketApp(self.PROTOCOL + self.address,
                                   on_message = self.on_message,
                                   on_error = self.on_error,
                                   on_close = self.on_close)
