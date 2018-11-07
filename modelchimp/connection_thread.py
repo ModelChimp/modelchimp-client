@@ -190,7 +190,9 @@ class RestConnection:
                 save_request = self.session.post(ml_model_url, data=result,
                 files={"code_file": f}, headers=self._http_headers)
                 self.model_id = json.loads(save_request.text)['model_id']
-                self.logger.info('Experiment is live at %smodel-detail/%s' % (self.address, self.model_id))
+                self.logger.info('Experiment is live at %s%smodel-detail/%s' % (self.PROTOCOL,
+                                                                                self.address,
+                                                                                self.model_id))
             return True
         except Exception:
             self.logger.error("Failed to created experiment")
