@@ -20,7 +20,7 @@ from .tracker_thread import TrackerThread
 from .event_queue import event_queue
 from .connection_thread import WSConnectionThread, RestConnection
 from .utils import generate_uid, current_string_datetime, is_uuid4_pattern
-from .enum import ClientEvent
+from .enums import ClientEvent
 from .log import get_logger
 
 logger = get_logger(__name__)

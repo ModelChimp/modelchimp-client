@@ -5,6 +5,10 @@ setup(
   packages = find_packages(),
   version = '0.4.17',
   description = 'Python client to upload the machine learning models data to the model chimp cloud',
+  entry_points='''
+        [console_scripts]
+        datachimp=modelchimp.cli:cli
+    ''',
   author = 'Samir Madhavan',
   author_email = 'samir.madhavan@gmail.com',
   url = 'https://www.modelchimp.com',
@@ -15,7 +19,8 @@ setup(
           'six',
           'websocket-client',
           'pytz',
-          'cloudpickle'
+          'cloudpickle',
+          'click',
       ],
   classifiers = [],
 )

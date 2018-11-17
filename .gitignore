@@ -18,7 +18,6 @@ logs
 *.egg-info
 develop-eggs
 eggs
-bin
 build
 dist
 include
@@ -34,7 +33,7 @@ pip-log.txt
 
 # Python virtual envs
 mcenv
-
+venv
 
 # Emacs clutter
 TAGS

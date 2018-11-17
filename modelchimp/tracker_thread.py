@@ -4,7 +4,7 @@ import logging
 from threading import Thread
 
 from .event_queue import event_queue
-from .enum import ClientEvent, ExperimentStatus
+from .enums import ClientEvent, ExperimentStatus
 
 
 class TrackerThread(Thread):

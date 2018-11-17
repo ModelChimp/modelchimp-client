@@ -7,7 +7,7 @@ import logging
 from time import sleep
 from threading import Thread, Event
 
-from .enum import ExperimentStatus
+from .enums import ExperimentStatus
 
 
 class WSConnectionThread(Thread):
@@ -196,6 +196,34 @@ class RestConnection:
             return True
         except Exception:
             self.logger.error("Failed to created experiment")
+
+        return False
+
+    def create_data_version(self, version_id, data, file_locations):
+        if not self._connected:
+            return False
+        print(file_locations)
+        url =  self.PROTOCOL + "%s%s%s/" % (self.address,
+                                    'api/create-data-version/',
+                                     self.project_id)
+        result = {
+            'version_id' : version_id,
+            'project' : self.project_id,
+            'name': version_id,
+            'files': json.dumps(file_locations)
+        }
+
+        try:
+            # with open(filename, 'rb') as f:
+            self.logger.info('Data is getting uploaded')
+
+            save_request = self.session.post(url, data=result,
+            files={"files_path": data}, headers=self._http_headers)
+
+            self.logger.info('Data successfully uploaded')
+            return True
+        except Exception as e:
+            self.logger.error("Failed to load the data %s" %(e,))
 
         return False
 

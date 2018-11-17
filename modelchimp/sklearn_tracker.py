@@ -3,7 +3,7 @@ import sys
 from modelchimp import settings
 
 from .event_queue import event_queue
-from .enum import ClientEvent
+from .enums import ClientEvent
 from .module_loader import Finder
 
 
