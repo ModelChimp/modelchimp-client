@@ -13,6 +13,7 @@ class ClientEvent(object):
     GET_EXPERIMENT_DURATION_DATA = 12
     HEART_BEAT = 13
     DATASET_ID = 14
+    GRID_SEARCH = 15
 
 class ExperimentStatus(object):
     IN_PROCESS = 1

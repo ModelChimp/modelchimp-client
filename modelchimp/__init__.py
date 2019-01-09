@@ -593,6 +593,42 @@ class Tracker:
         # Add to the queue
         self.add_multiple_params(result)
 
+    def add_gridsearch_results(self, cv_result):
+        '''
+        Save the results of sklearn GridSearch to ModelChimp
+
+        Parameters
+        ----------
+        cv_result : Dict object containing the grid search result
+
+        Returns
+        -------
+        None
+        '''
+        data = dict()
+
+        # Check the parameters
+        if not isinstance(cv_result, dict):
+            logger.warning('add_gridsearch_result: cv_result should be a dict')
+            return
+
+        # Convert the data to pure python
+        for k in cv_result:
+            try:
+                data[k] = cv_result[k].tolist()
+            except AttributeError:
+                if isinstance(cv_result[k], (dict,list)):
+                    data[k] = cv_result[k]
+
+        result = dict()
+        result['data'] = data
+
+        # Add the event to the queue
+        grid_search_event = {'type': ClientEvent.GRID_SEARCH,
+                            'value': result}
+        event_queue.put(grid_search_event)
+
+
 
     def __get_compressed_picke(self, obj):
         pickled_obj = cloudpickle.dumps(obj,-1)
