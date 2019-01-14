@@ -593,7 +593,7 @@ class Tracker:
         # Add to the queue
         self.add_multiple_params(result)
 
-    def add_gridsearch_results(self, cv_result):
+    def add_gridsearch(self, model):
         '''
         Save the results of sklearn GridSearch to ModelChimp
 
@@ -605,12 +605,18 @@ class Tracker:
         -------
         None
         '''
-        data = dict()
 
-        # Check the parameters
-        if not isinstance(cv_result, dict):
-            logger.warning('add_gridsearch_result: cv_result should be a dict')
+        try:
+            from sklearn.model_selection import GridSearchCV
+            if not isinstance(model, GridSearchCV):
+                logger.warning('add_gridsearch_results: model should be an instance of GridSearchCV')
+                return
+        except ImportError:
+            logger.warning('add_gridsearch_results: sklearn grid search is supported')
             return
+
+        data = dict()
+        cv_result = model.cv_results_
 
         # Convert the data to pure python
         for k in cv_result:
