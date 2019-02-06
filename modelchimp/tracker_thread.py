@@ -8,11 +8,12 @@ from .enums import ClientEvent, ExperimentStatus
 
 
 class TrackerThread(Thread):
-    def __init__(self, websocket_connection, rest, key, code_file):
+    def __init__(self, websocket_connection, rest, code_file, key, experiment_id):
         Thread.__init__(self)
         self.stopped = False
         self.daemon = True
         self.key = key
+        self.experiment_id = experiment_id
         self.web_socket = websocket_connection
         self.rest = rest
         self.code_file = code_file
@@ -43,7 +44,6 @@ class TrackerThread(Thread):
         self._end()
 
     def handle_message(self, event):
-        event['key'] = self.key
         self.web_socket.send(event)
 
     def add_heart_beat(self):
@@ -68,6 +68,7 @@ class TrackerThread(Thread):
             except queue.Empty:
                 self.web_socket.send({'type': ClientEvent.COMPLETED,
                                         'key': self.key,
+                                        'experiment_id': self.experiment_id,
                                         'value': ExperimentStatus.COMPLETED})
                 break
         self.web_socket.stop()

@@ -59,7 +59,7 @@ class Tracker:
 
         # Connection addresses
         rest_address = "%s/" %(self.host,)
-        ws_address = "%s/ws/tracker/%s/" % (self.host,self.experiment_id)
+        ws_address = "%s/ws/tracker/" % (self.host,)
 
         # Create the experiment
         self.rest = RestConnection(rest_address, self.key, self.experiment_name)
@@ -77,17 +77,17 @@ class Tracker:
         self.web_socket.start()
 
         # Start the tracker thread
-        self.tracker_thread = TrackerThread(self.web_socket, self.rest,  self.key, self._experiment_file)
+        self.tracker_thread = TrackerThread(self.web_socket, self.rest,self._experiment_file, self.key, self.experiment_id)
         self.tracker_thread.start()
 
         # Send experiment start
-        event_queue.put({
+        self._add_to_queue({
             'type' : ClientEvent.EXPERIMENT_START,
             'value' : self._experiment_start
         })
 
         # Send the code file
-        event_queue.put({
+        self._add_to_queue({
             'type' : ClientEvent.CODE_FILE,
             'value' : {
                 'filename' : self._experiment_file,
@@ -107,11 +107,17 @@ class Tracker:
     def _on_end(self):
         "Send the experiment end event on completion"
         self._experiment_end = current_string_datetime()
-        event_queue.put({
+        self._add_to_queue({
             'type' : ClientEvent.EXPERIMENT_END,
             'value' : self._experiment_end
         })
         self.tracker_thread.stop()
+
+    def _add_to_queue(self, event):
+        event['experiment_id'] = self.experiment_id
+        event['key'] = self.key
+        event_queue.put(event)
+
 
     def add_param(self, param_name, param_value):
         '''
@@ -141,7 +147,7 @@ class Tracker:
         # Add the event to the queue
         eval_event = {'type': ClientEvent.MODEL_PARAM, 'value': {}}
         eval_event['value'] = { param_name : param_value }
-        event_queue.put(eval_event)
+        self._add_to_queue(eval_event)
 
     def add_multiple_params(self, params_dict):
         '''
@@ -208,7 +214,7 @@ class Tracker:
                         'value': {},
                         'epoch': epoch}
         metric_event['value'] = { metric_name : metric_value }
-        event_queue.put(metric_event)
+        self._add_to_queue(metric_event)
 
     def add_multiple_metrics(self, metrics_dict, epoch=None):
         '''
@@ -280,7 +286,7 @@ class Tracker:
                         'value': {},
                         'epoch': epoch}
         duration_event['value'] = { tag : seconds_elapsed }
-        event_queue.put(duration_event)
+        self._add_to_queue(duration_event)
 
     def add_dataset_id(self, id):
         '''
@@ -303,7 +309,7 @@ class Tracker:
 
         dataset_id_event = {'type': ClientEvent.DATASET_ID,
                             'value': id}
-        event_queue.put(dataset_id_event)
+        self._add_to_queue(dataset_id_event)
 
     def add_custom_object(self, name, object):
         '''
@@ -632,7 +638,7 @@ class Tracker:
         # Add the event to the queue
         grid_search_event = {'type': ClientEvent.GRID_SEARCH,
                             'value': result}
-        event_queue.put(grid_search_event)
+        self._add_to_queue(grid_search_event)
 
 
 

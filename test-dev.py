@@ -2,7 +2,7 @@ import sys
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-sys.path.insert(0, '.')
+
 
 class Sample:
     def __init__(self):
