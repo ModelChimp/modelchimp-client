@@ -112,6 +112,8 @@ class Tracker:
         event['key'] = self.key
         event_queue.put(event)
 
+    def end(self):
+        self._on_end()
 
     def add_param(self, param_name, param_value):
         '''

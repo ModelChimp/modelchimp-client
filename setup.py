@@ -3,7 +3,7 @@ from setuptools import setup,find_packages
 setup(
   name = 'modelchimp',
   packages = find_packages(),
-  version = '0.4.17',
+  version = '0.4.18.dev',
   description = 'Python client to upload the machine learning models data to the model chimp cloud',
   entry_points='''
         [console_scripts]
