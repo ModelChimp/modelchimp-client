@@ -92,10 +92,9 @@ class WSConnectionThread(Thread):
 class RestConnection:
     PROTOCOL = "https://"
 
-    def __init__(self, address, key, experiment_name):
+    def __init__(self, address, key):
         self.address = address
         self.key = key
-        self.experiment_name = experiment_name
         self.project_id = ''
         self.model_id = ''
         self.session = requests.Session()
@@ -169,7 +168,7 @@ class RestConnection:
 
         return request
 
-    def create_experiment(self, experiment_id, filename):
+    def create_experiment(self, experiment_id, experiment_name,  filename):
         if not self._connected:
             return False
 
@@ -183,7 +182,7 @@ class RestConnection:
             'status' : ExperimentStatus.IN_PROCESS
         }
 
-        if self.experiment_name: result['name'] = self.experiment_name
+        if experiment_name: result['name'] = experiment_name
 
         try:
             with open(filename, 'rb') as f:

@@ -8,15 +8,13 @@ from .enums import ClientEvent, ExperimentStatus
 
 
 class TrackerThread(Thread):
-    def __init__(self, websocket_connection, rest, code_file, key, experiment_id):
+    def __init__(self, websocket_connection, key, experiment_id):
         Thread.__init__(self)
         self.stopped = False
         self.daemon = True
         self.key = key
         self.experiment_id = experiment_id
         self.web_socket = websocket_connection
-        self.rest = rest
-        self.code_file = code_file
         self.beat_interval = 10
         self.last_beat_snapshot = time.time()
         self.logger = logging.getLogger(__name__)
@@ -52,8 +50,21 @@ class TrackerThread(Thread):
         if current_beat > (self.last_beat_snapshot + self.beat_interval):
             event_queue.put({
                 'type' : ClientEvent.HEART_BEAT,
+                'key': self.key,
+                'experiment_id': self.experiment_id,
             })
             self.last_beat_snapshot = current_beat
+
+    def update_meta_info(self, key, experiment_id):
+        '''
+        Update the key and experiment id
+        '''
+        self.web_socket.send({'type': ClientEvent.COMPLETED,
+                                'key': self.key,
+                                'experiment_id': self.experiment_id,
+                                'value': ExperimentStatus.COMPLETED})
+        self.key = key
+        self.experiment_id = experiment_id
 
     def _end(self):
         self.logger.info('Experiment has ended. Closing connection with ModelChimp.')
