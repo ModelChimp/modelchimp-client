@@ -84,9 +84,23 @@ class Tracker:
         atexit.register(self._on_end)
 
     def _get_file_path(self):
+        if self._check_notebook():
+            return None
+
         frame = inspect.stack()[-1]
         module = inspect.getmodule(frame[0])
         return module.__file__
+
+    def _check_notebook(self):
+        IS_NOTEBOOK = False
+
+        try:
+            ipy_str = str(type(get_ipython()))
+            IS_NOTEBOOK = True
+        except:
+            pass
+
+        return IS_NOTEBOOK
 
     def _on_end(self):
         "Send the experiment end event on completion"
