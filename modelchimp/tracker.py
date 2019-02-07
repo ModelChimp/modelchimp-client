@@ -91,10 +91,6 @@ class Tracker:
     def _on_end(self):
         "Send the experiment end event on completion"
         self._experiment_end = current_string_datetime()
-        self._add_to_queue({
-            'type' : ClientEvent.EXPERIMENT_END,
-            'value' : self._experiment_end
-        })
         self.tracker_thread.stop()
 
     def _add_to_queue(self, event):

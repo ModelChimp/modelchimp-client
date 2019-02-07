@@ -5,6 +5,7 @@ from threading import Thread
 
 from .event_queue import event_queue
 from .enums import ClientEvent, ExperimentStatus
+from .utils import current_string_datetime
 
 
 class TrackerThread(Thread):
@@ -59,10 +60,10 @@ class TrackerThread(Thread):
         '''
         Update the key and experiment id
         '''
-        self.web_socket.send({'type': ClientEvent.COMPLETED,
+        self.web_socket.send({'type': ClientEvent.EXPERIMENT_COMPLETED,
                                 'key': self.key,
                                 'experiment_id': self.experiment_id,
-                                'value': ExperimentStatus.COMPLETED})
+                                'value': current_string_datetime()})
         self.key = key
         self.experiment_id = experiment_id
 
@@ -77,9 +78,9 @@ class TrackerThread(Thread):
                 else:
                     break
             except queue.Empty:
-                self.web_socket.send({'type': ClientEvent.COMPLETED,
+                self.web_socket.send({'type': ClientEvent.EXPERIMENT_COMPLETED,
                                         'key': self.key,
                                         'experiment_id': self.experiment_id,
-                                        'value': ExperimentStatus.COMPLETED})
+                                        'value': current_string_datetime()})
                 break
         self.web_socket.stop()
