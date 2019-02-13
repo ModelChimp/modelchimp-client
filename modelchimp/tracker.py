@@ -601,7 +601,7 @@ class Tracker:
 
         Parameters
         ----------
-        cv_result : Dict object containing the grid search result
+        model : GridSearch model object of class GridSearchCV
 
         Returns
         -------
