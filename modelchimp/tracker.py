@@ -20,9 +20,10 @@ from .event_queue import event_queue
 from .connection_thread import WSConnectionThread, RestConnection
 from .utils import generate_uid, current_string_datetime, is_uuid4_pattern
 from .enums import ClientEvent
-from .log import get_logger
+import logging
 
-logger = get_logger(__name__)
+
+logger = logging.getLogger(__name__)
 
 
 class Tracker:

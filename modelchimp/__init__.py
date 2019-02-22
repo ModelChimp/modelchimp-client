@@ -1,4 +1,4 @@
-from .tracker import Tracker
-from .log import get_logger
+import logging.config
+logging.config.fileConfig('modelchimp/logging_config.ini')
 
-logger = get_logger(__name__)
+from .tracker import Tracker
