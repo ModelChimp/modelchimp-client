@@ -636,7 +636,56 @@ class Tracker:
                             'value': result}
         self._add_to_queue(grid_search_event)
 
+    def add_asset(self, filepath, meta_dict=None, custom_file_name=None):
+        '''
+        Upload file to ModelChimp.
+        Current files supported - Image and Text
 
+        Parameters
+        ----------
+        filepath (str): Path of the file
+        meta_dict (dict): Meta information to be stored along with the file
+        custom_file_name (str): An alternate name to be used for the file
+
+        Returns
+        -------
+        None
+        '''
+
+        if not os.path.isfile(filepath):
+            logger.warning('add_asset: File does not exist at %s' % (filepath))
+            return
+
+        if meta_dict and not isinstance(meta_dict, dict):
+            logger.warning('add_asset: meta_dict should be a dictionary for file: %s' % (filepath))
+            return
+
+        if custom_file_name and not isinstance(custom_file_name, str):
+            logger.warning('add_asset: custom_file_name should be a string for file: %s' % (filepath))
+            return
+
+        if not self.tracking:
+            return
+
+        for k in meta_dict:
+            if not isinstance(meta_dict[k], (int, float, str)):
+                logger.warning("add_asset: Ignoring value of %s. Value should be a number or string" % (k,))
+                del(meta_dict[k])
+
+        result = {
+            "custom_file_name": custom_file_name,
+            "meta_dict": json.dumps(meta_dict),
+        }
+
+        logger.info("Uploading asset: %s" % filepath)
+        with open(filepath, 'rb') as f:
+            save_request = self.rest.post(
+                    "api/experiment-detail/%s/asset" % (self.rest.model_id,),
+                    data=result,
+                    files={'asset': f})
+
+        if save_request.status_code != 201:
+            logger.info("Asset could not be saved: %s" % (filepath))
 
     def __get_compressed_picke(self, obj):
         pickled_obj = cloudpickle.dumps(obj,-1)
