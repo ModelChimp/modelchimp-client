@@ -668,10 +668,11 @@ class Tracker:
         if not self.tracking:
             return
 
-        for k in meta_dict:
-            if not isinstance(meta_dict[k], (int, float, str)):
-                logger.warning("add_asset: Ignoring value of %s. Value should be a number or string" % (k,))
-                del(meta_dict[k])
+        if meta_dict:
+            for k in meta_dict:
+                if not isinstance(meta_dict[k], (int, float, str)):
+                    logger.warning("add_asset: Ignoring value of %s. Value should be a number or string" % (k,))
+                    del(meta_dict[k])
 
         result = {
             "custom_file_name": custom_file_name,
