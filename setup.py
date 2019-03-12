@@ -3,7 +3,7 @@ from setuptools import setup,find_packages
 setup(
   name = 'modelchimp',
   packages = find_packages(),
-  version = '0.5.1.dev',
+  version = '0.5.1',
   description = 'Python client to upload the machine learning models data to the model chimp cloud',
   entry_points='''
         [console_scripts]
@@ -17,7 +17,7 @@ setup(
           'requests',
           'future',
           'six',
-          'websocket-client',
+          'websocket-client==0.47.0',
           'pytz',
           'cloudpickle',
           'click',
