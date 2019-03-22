@@ -114,6 +114,17 @@ class Tracker:
         event_queue.put(event)
 
     def end(self):
+        '''
+        End the experiment. Required for Jupyter notebook or looping through experiments
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         self._on_end()
 
     def add_param(self, param_name, param_value):
@@ -640,7 +651,11 @@ class Tracker:
     def add_asset(self, filepath, meta_dict=None, custom_file_name=None):
         '''
         Upload file to ModelChimp.
-        Current files supported - Image and Text
+        Current files supported - Image, Text and Model files
+
+        Image - 'jpg', 'bmp', 'jpeg', 'png', 'gif', 'svg'
+        Text - 'txt', 'log', 'yaml', 'yml', 'json', 'csv', 'tsv', 'md', 'rst'
+        Model - 'pickle', 'bin', 'h5'
 
         Parameters
         ----------
