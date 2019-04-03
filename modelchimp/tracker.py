@@ -401,7 +401,7 @@ class Tracker:
         return custom_object
 
 
-    def add_custom_plot(self, name="exportedPlot.png", plt=None):
+    def add_mat_plot(self, name="exportedPlot.png", plt=None):
         '''
         Store a matplot
 
