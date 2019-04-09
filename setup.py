@@ -6,7 +6,7 @@ setup(
   name = 'modelchimp',
   packages = find_packages(),
   include_package_data = True,
-  version = '0.5.5',
+  version = '0.5.6',
   description = 'Python client to upload the machine learning models data to the model chimp cloud',
   entry_points='''
         [console_scripts]
